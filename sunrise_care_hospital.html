@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+================================================================
+  SUNRISE CARE HOSPITAL — HOMEPAGE
+  Practical Web Design Assignment
+================================================================
+  Group Members:
+    1. Yedidia KWAME - 28050
+    2. Joseph Caleb GISUBIZO 26471
+    3. Queen ISHIMWE 29063
+
+  Submission Email : ericbyiringiro25@gmail.com
+  Institution      : AUCA — Adventist University of Central Africa
+  Date             : June 2026
+================================================================
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunrise Care Hospital — Compassionate Care for a Healthier Tomorrow</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+
+/* ================================================================
+   RESET & ROOT VARIABLES
+================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:        #16a34a;
+  --green-dark:   #15803d;
+  --deep:         #1e3a2f;
+  --deep-2:       #0f2018;
+  --mint:         #d1fae5;
+  --mint-light:   #f0fdf4;
+  --white:        #ffffff;
+  --text:         #1f2937;
+  --text-mid:     #374151;
+  --text-soft:    #6b7280;
+  --border:       rgba(22,163,74,.18);
+  --glass-bg:     rgba(255,255,255,.55);
+  --glass-border: rgba(255,255,255,.72);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,.09);
+  --nav-h:        74px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--mint-light);
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+img { display: block; max-width: 100%; }
+a   { transition: color .2s; }
+ul  { list-style: none; }
+
+/* ================================================================
+   MOBILE NAV — CSS-only checkbox toggle (no JavaScript)
+================================================================ */
+.nav-cb { display: none; } /* hidden checkbox — controls mobile nav */
+
+/* ================================================================
+   HEADER  —  fixed horizontal top navigation bar
+================================================================ */
+header {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: var(--nav-h);
+  background: linear-gradient(135deg, var(--deep) 0%, var(--green-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 1000;
+  box-shadow: 0 2px 20px rgba(0,0,0,.28);
+}
+
+/* ---- Brand (logo + name + slogan) ---- */
+.hdr-brand {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.hdr-logo {
+  width: 42px; height: 42px;
+  background: rgba(255,255,255,.16);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.hdr-text { color: var(--white); }
+
+.hdr-text h1 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.hdr-slogan {
+  font-size: .68rem;
+  color: rgba(255,255,255,.7);
+  font-style: italic;
+  line-height: 1.3;
+  margin-top: .1rem;
+}
+
+/* ---- Navigation — horizontal menu ---- */
+header nav { display: flex; }
+
+.hdr-nav-ul {
+  display: flex;
+  align-items: center;
+  gap: .15rem;
+}
+
+.hdr-nav-ul li a {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .48rem .85rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: rgba(255,255,255,.82);
+  font-size: .9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background .2s, color .2s;
+}
+
+.hdr-nav-ul li a:hover { background: rgba(255,255,255,.14); color: var(--white); }
+
+/* Nav icons — hidden on desktop horizontal nav */
+.nav-ic { display: none; }
+
+/* ---- Hamburger label — mobile only ---- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: .5rem;
+  flex-shrink: 0;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+
+/* Hamburger → X animation when nav is open */
+.nav-cb:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-cb:checked ~ .hamburger span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-cb:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Close label inside mobile nav drawer */
+.nav-close-lbl {
+  display: none;
+  color: rgba(255,255,255,.8);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: .4rem .6rem;
+  align-self: flex-end;
+  margin-bottom: .5rem;
+  transition: color .2s;
+}
+
+.nav-close-lbl:hover { color: var(--white); }
+
+/* Full-screen overlay that closes nav on click */
+.nav-overlay-lbl {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.42);
+  z-index: 998;
+  cursor: pointer;
+}
+
+.nav-cb:checked ~ .nav-overlay-lbl { display: block; }
+
+/* ================================================================
+   PAGE WRAPPER
+================================================================ */
+#pg { margin-top: var(--nav-h); }
+
+/* ================================================================
+   HERO SECTION  (#home)
+================================================================ */
+.hero {
+  background: linear-gradient(135deg, #a7f3d0 0%, #d1fae5 45%, #bbf7d0 75%, #6ee7b7 100%);
+  padding: 5.5rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -100px; right: -80px;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(22,163,74,.22) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: -110px; left: -60px;
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, rgba(110,231,183,.3) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-in {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-copy { flex: 1; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  background: rgba(255,255,255,.48);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.68);
+  color: var(--deep);
+  padding: .42rem 1.05rem;
+  border-radius: 20px;
+  font-size: .82rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.hero-copy h2 {
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: var(--deep);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.hero-copy h2 span { color: var(--green); }
+
+.hero-copy > p {
+  color: #374151;
+  font-size: 1.04rem;
+  line-height: 1.75;
+  margin-bottom: 1.8rem;
+  max-width: 520px;
+}
+
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.btn-prim {
+  background: var(--green);
+  color: var(--white);
+  padding: .78rem 1.9rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .93rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  box-shadow: 0 4px 14px rgba(22,163,74,.35);
+  transition: background .25s, transform .25s;
+}
+
+.btn-prim:hover { background: var(--green-dark); transform: translateY(-2px); }
+
+.btn-out {
+  background: rgba(255,255,255,.46);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--deep);
+  padding: .78rem 1.9rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .93rem;
+  border: 1.5px solid rgba(255,255,255,.7);
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  transition: background .25s, transform .25s;
+}
+
+.btn-out:hover { background: rgba(255,255,255,.65); transform: translateY(-2px); }
+
+.hero-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  background: rgba(255,255,255,.46);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.65);
+  padding: .7rem 1.1rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.hero-stat .sv {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--green);
+  line-height: 1;
+}
+
+.hero-stat .sl {
+  font-size: .76rem;
+  color: var(--deep);
+  font-weight: 600;
+  margin-top: .22rem;
+}
+
+.hero-img { flex: 0 0 370px; max-width: 370px; }
+
+.hero-img img {
+  width: 100%;
+  height: 370px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.16);
+}
+
+/* ================================================================
+   CONTENT LAYOUT  —  main column + aside (CSS Flexbox)
+================================================================ */
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  padding: 3.5rem 2rem;
+  align-items: flex-start;
+}
+
+.main { flex: 1; min-width: 0; }
+
+/* ================================================================
+   SECTION HEADINGS
+================================================================ */
+section { margin-bottom: 4.5rem; }
+
+section[id] { scroll-margin-top: calc(var(--nav-h) + 18px); }
+
+.sec-h {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  color: var(--deep);
+  margin-bottom: .4rem;
+  position: relative;
+  padding-bottom: .85rem;
+}
+
+.sec-h::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 50px; height: 4px;
+  background: var(--green);
+  border-radius: 2px;
+}
+
+.sec-h span { color: var(--green); }
+
+.sec-sub { color: var(--text-soft); font-size: .95rem; margin-bottom: 2rem; }
+
+/* ================================================================
+   OUR DEPARTMENTS  —  articles  (CSS Flexbox)
+================================================================ */
+.dept-list { display: flex; flex-direction: column; gap: 2rem; }
+
+.dept-list article {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  transition: transform .3s, box-shadow .3s;
+}
+
+.dept-list article:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 50px rgba(0,0,0,.12);
+}
+
+.dept-list article img { width: 270px; object-fit: cover; flex-shrink: 0; }
+
+.dept-body { padding: 1.9rem; flex: 1; }
+
+.dept-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--mint);
+  color: var(--green);
+  padding: .28rem .85rem;
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 700;
+  margin-bottom: .9rem;
+}
+
+.dept-body h3 { font-size: 1.25rem; font-weight: 700; color: var(--deep); margin-bottom: .65rem; }
+
+.dept-body p { color: var(--text-mid); line-height: 1.75; margin-bottom: .8rem; }
+
+.kv-label {
+  font-size: .82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--deep);
+  margin-bottom: .55rem;
+}
+
+.kv-list { display: flex; flex-wrap: wrap; gap: .45rem; }
+
+.kv-list li {
+  background: var(--mint);
+  color: var(--green-dark);
+  padding: .28rem .8rem;
+  border-radius: 20px;
+  font-size: .8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+/* ================================================================
+   OUR SERVICES  —  articles grid  (CSS Flexbox)
+================================================================ */
+.svc-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+
+.svc-grid article {
+  flex: 1 1 260px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  transition: transform .3s, box-shadow .3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.svc-grid article:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 52px rgba(0,0,0,.13);
+}
+
+.svc-grid article img { width: 100%; height: 195px; object-fit: cover; }
+
+.svc-ic-row { position: relative; height: 0; }
+
+.svc-ic {
+  position: absolute;
+  bottom: -1px; left: 1.5rem;
+  transform: translateY(-50%);
+  width: 52px; height: 52px;
+  background: var(--green);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(22,163,74,.42);
+}
+
+.svc-body {
+  padding: 2.6rem 1.5rem 1.6rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.svc-body h3 { font-size: 1.12rem; font-weight: 700; color: var(--deep); margin-bottom: .55rem; }
+
+.svc-body > p { color: var(--text-mid); line-height: 1.7; margin-bottom: 1rem; }
+
+.svc-ul { display: flex; flex-direction: column; gap: .38rem; margin-top: auto; }
+
+.svc-ul li {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .87rem;
+  color: var(--text-mid);
+}
+
+.svc-ul li i { color: var(--green); font-size: .75rem; flex-shrink: 0; }
+
+/* ================================================================
+   DOCTORS  (CSS Flexbox grid)
+================================================================ */
+.doc-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+
+.doc-card {
+  flex: 1 1 210px;
+  max-width: 265px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--glass-shadow);
+  text-align: center;
+  transition: transform .3s, box-shadow .3s;
+}
+
+.doc-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,.13); }
+
+.doc-top {
+  background: linear-gradient(135deg, var(--mint), #bbf7d0);
+  padding: 1.75rem 1.5rem 1rem;
+}
+
+.doc-top img {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--white);
+  box-shadow: 0 4px 14px rgba(0,0,0,.1);
+  margin: 0 auto;
+}
+
+.doc-body { padding: 1rem 1.2rem 1.5rem; }
+
+.doc-body h4 { font-size: 1rem; font-weight: 700; color: var(--deep); margin-bottom: .3rem; }
+
+.doc-spec {
+  display: inline-block;
+  background: var(--mint);
+  color: var(--green);
+  padding: .2rem .7rem;
+  border-radius: 12px;
+  font-size: .76rem;
+  font-weight: 700;
+  margin-bottom: .7rem;
+}
+
+.doc-body p { font-size: .83rem; color: var(--text-soft); line-height: 1.5; margin-bottom: 1rem; }
+
+.doc-btns { display: flex; gap: .5rem; justify-content: center; }
+
+.bsm {
+  padding: .38rem .9rem;
+  border-radius: 20px;
+  font-size: .79rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  transition: all .22s;
+}
+
+.bsm-g { background: var(--green); color: var(--white); }
+.bsm-g:hover { background: var(--green-dark); }
+.bsm-o { border: 1.5px solid var(--border); color: var(--green); }
+.bsm-o:hover { background: var(--mint); }
+
+/* ================================================================
+   EMERGENCY BANNER
+================================================================ */
+.emg-bar {
+  background: linear-gradient(135deg, var(--deep) 0%, var(--green-dark) 100%);
+  border-radius: 14px;
+  padding: 1.4rem 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 3.5rem;
+}
+
+.emg-bar > i { font-size: 2rem; color: #34d399; flex-shrink: 0; }
+
+.emg-bar .et h4 { color: var(--white); font-size: 1rem; margin-bottom: .2rem; }
+.emg-bar .et p  { color: rgba(255,255,255,.72); font-size: .87rem; }
+
+.emg-bar a {
+  margin-left: auto;
+  background: var(--white);
+  color: var(--green);
+  padding: .55rem 1.25rem;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .88rem;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  transition: background .22s;
+}
+
+.emg-bar a:hover { background: var(--mint); }
+
+/* ================================================================
+   CONTACT SECTION
+================================================================ */
+.contact-flex { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
+
+.contact-cards { flex: 1 1 230px; display: flex; flex-direction: column; gap: 1rem; }
+
+.cc {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 13px;
+  padding: 1.2rem;
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  gap: .85rem;
+  align-items: flex-start;
+}
+
+.cc-ic {
+  width: 42px; height: 42px;
+  background: var(--mint);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.cc h4 { font-size: .93rem; font-weight: 700; color: var(--deep); margin-bottom: .22rem; }
+
+.cc p, .cc a {
+  font-size: .87rem;
+  color: var(--text-soft);
+  text-decoration: none;
+  line-height: 1.6;
+}
+
+.cc a:hover { color: var(--green); }
+
+.contact-form-card {
+  flex: 1.5 1 280px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: var(--glass-shadow);
+}
+
+.contact-form-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--deep);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+
+.contact-form-card h3 i { color: var(--green); }
+
+.fr { display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1rem; }
+
+.fr label {
+  font-size: .84rem;
+  font-weight: 600;
+  color: var(--deep);
+  display: flex;
+  align-items: center;
+  gap: .38rem;
+}
+
+.fr label i { color: var(--green); font-size: .77rem; }
+
+.fr input,
+.fr textarea {
+  padding: .65rem 1rem;
+  border: 1.5px solid rgba(22,163,74,.2);
+  border-radius: 10px;
+  font-size: .92rem;
+  font-family: inherit;
+  color: var(--text);
+  background: rgba(255,255,255,.8);
+  outline: none;
+  transition: border-color .25s, box-shadow .25s;
+  width: 100%;
+}
+
+.fr input:focus,
+.fr textarea:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(22,163,74,.12);
+}
+
+.fr textarea { resize: vertical; min-height: 110px; }
+
+.contact-form-card .btn-prim {
+  width: 100%;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-size: .93rem;
+}
+
+/* ================================================================
+   ASIDE  —  Quick Links + Contact Info (sticky sidebar)
+================================================================ */
+aside {
+  width: 275px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  position: sticky;
+  top: calc(var(--nav-h) + 18px);
+}
+
+.aside-box {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--glass-shadow);
+}
+
+.aside-box h3 {
+  font-size: .98rem;
+  font-weight: 700;
+  color: var(--deep);
+  margin-bottom: 1rem;
+  padding-bottom: .6rem;
+  border-bottom: 2px solid var(--mint);
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+
+.aside-box h3 i { color: var(--green); }
+
+/* Quick Links list */
+.ql { display: flex; flex-direction: column; gap: .4rem; }
+
+.ql li a {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .55rem .7rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-mid);
+  font-size: .88rem;
+  font-weight: 500;
+  transition: background .2s, color .2s, transform .2s;
+}
+
+.ql li a i { color: var(--green); font-size: .82rem; width: 16px; text-align: center; }
+
+.ql li a:hover {
+  background: var(--mint);
+  color: var(--deep);
+  transform: translateX(3px);
+}
+
+/* Aside contact info */
+.aside-contact p {
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  font-size: .87rem;
+  color: var(--text-mid);
+  margin-bottom: .6rem;
+  line-height: 1.5;
+}
+
+.aside-contact p i { color: var(--green); flex-shrink: 0; margin-top: .12rem; }
+
+.aside-contact a { color: var(--green); text-decoration: none; }
+
+.aside-contact a:hover { text-decoration: underline; }
+
+/* ================================================================
+   FOOTER
+================================================================ */
+footer {
+  background: linear-gradient(135deg, var(--deep) 0%, var(--deep-2) 100%);
+  color: rgba(255,255,255,.8);
+  padding: 3.5rem 2rem 1.75rem;
+}
+
+.ft-in { max-width: 1240px; margin: 0 auto; }
+
+.ft-grid {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.ft-brand { flex: 1.6 1 200px; }
+
+.ft-brand .logo-row {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  margin-bottom: .75rem;
+}
+
+.ft-brand .logo-row .fi {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,.14);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  color: var(--white);
+}
+
+.ft-brand .logo-row h3 { font-size: 1.05rem; font-weight: 700; color: var(--white); }
+
+.ft-brand p { font-size: .86rem; color: rgba(255,255,255,.62); line-height: 1.75; }
+
+.soc-links { display: flex; gap: .6rem; margin-top: 1rem; }
+
+.soc-links a {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,.78);
+  text-decoration: none;
+  font-size: .9rem;
+  transition: background .2s, color .2s, transform .2s;
+}
+
+.soc-links a:hover {
+  background: var(--green);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.ft-col { flex: 1 1 130px; }
+
+.ft-col h4 { font-size: .9rem; font-weight: 700; color: var(--white); margin-bottom: 1rem; }
+
+.ft-col ul { display: flex; flex-direction: column; gap: .5rem; }
+
+.ft-col ul li a {
+  color: rgba(255,255,255,.6);
+  text-decoration: none;
+  font-size: .86rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  transition: color .2s;
+}
+
+.ft-col ul li a i { font-size: .72rem; }
+
+.ft-col ul li a:hover { color: #86efac; }
+
+.ft-bot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+
+.ft-bot p { font-size: .84rem; color: rgba(255,255,255,.5); }
+
+.ft-bot a { color: rgba(255,255,255,.55); text-decoration: none; font-size: .84rem; }
+
+.ft-bot a:hover { color: #86efac; }
+
+/* ================================================================
+   RESPONSIVE
+================================================================ */
+@media (max-width: 1024px) {
+  .hero-img { flex: 0 0 300px; max-width: 300px; }
+  .dept-list article img { width: 210px; }
+  .doc-card { max-width: 260px; }
+}
+
+@media (max-width: 768px) {
+  :root { --nav-h: 62px; }
+
+  /* Show hamburger, hide desktop nav */
+  .hamburger { display: flex; }
+  header nav { display: none; } /* replaced by mobile drawer below */
+
+  /* Mobile nav drawer */
+  .nav-cb:checked ~ nav {
+    display: flex;
+    position: fixed;
+    top: 0; left: 0;
+    width: 76vw; max-width: 285px;
+    height: 100vh;
+    background: linear-gradient(160deg, var(--deep), var(--green-dark));
+    padding: 1.25rem 1.5rem 2rem;
+    z-index: 999;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: 8px 0 30px rgba(0,0,0,.22);
+  }
+
+  .nav-cb:checked ~ nav .nav-close-lbl { display: flex; }
+
+  .nav-cb:checked ~ nav .hdr-nav-ul {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: .2rem;
+  }
+
+  .nav-cb:checked ~ nav .hdr-nav-ul li a {
+    padding: .7rem .9rem;
+    border-left: 3px solid transparent;
+    white-space: normal;
+  }
+
+  .nav-cb:checked ~ nav .hdr-nav-ul li a:hover {
+    border-left-color: #86efac;
+  }
+
+  /* Show nav icons in mobile drawer */
+  .nav-cb:checked ~ nav .nav-ic { display: inline; width: 18px; }
+
+  /* Hero */
+  .hero { padding: 3rem 1.25rem 2.5rem; }
+  .hero-in { flex-direction: column; gap: 2rem; }
+  .hero-img { display: none; }
+  .hero-btns { gap: .75rem; }
+
+  /* Content layout */
+  .wrap { flex-direction: column; padding: 2rem 1.25rem; }
+  aside { width: 100%; position: static; top: auto; }
+
+  /* Department articles */
+  .dept-list article { flex-direction: column; }
+  .dept-list article img { width: 100%; height: 210px; }
+
+  /* Contact */
+  .contact-flex { flex-direction: column; }
+
+  /* Footer */
+  .ft-grid { flex-direction: column; gap: 2rem; }
+  .ft-bot { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .hero-stats { gap: .6rem; }
+  .hero-stat .sv { font-size: 1.35rem; }
+  .doc-card { max-width: 100%; flex: 1 1 100%; }
+  .svc-grid article { flex: 1 1 100%; }
+  .hero-badge { font-size: .77rem; }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ==============================================================
+     HEADER  —  fixed horizontal navigation bar
+     (mobile: hidden, opened via CSS checkbox toggle)
+============================================================== -->
+<header id="site-header">
+
+  <!--
+    Hidden checkbox — controls the mobile nav drawer.
+    When checked: nav slides in, hamburger becomes X, overlay appears.
+    Pure CSS, no JavaScript required.
+  -->
+  <input type="checkbox" id="nav-cb" class="nav-cb">
+
+  <!-- Brand: hospital name + slogan (as required by assignment) -->
+  <a href="#home" class="hdr-brand">
+    <span class="hdr-logo"><i class="fa-solid fa-plus"></i></span>
+    <div class="hdr-text">
+      <h1>Sunrise Care Hospital</h1>
+      <p class="hdr-slogan"><em>Compassionate care for a healthier tomorrow.</em></p>
+    </div>
+  </a>
+
+  <!-- Hamburger label — visible on mobile only -->
+  <label for="nav-cb" class="hamburger" aria-label="Open navigation menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </label>
+
+  <!-- Navigation — 5 horizontal hyperlinks (as required by assignment) -->
+  <nav aria-label="Main navigation">
+    <!-- Close button inside mobile drawer -->
+    <label for="nav-cb" class="nav-close-lbl" aria-label="Close navigation menu">
+      <i class="fa-solid fa-xmark"></i>
+    </label>
+
+    <ul class="hdr-nav-ul">
+      <li><a href="#home"       ><i class="fa-solid fa-house-medical nav-ic"></i>  <span>Home</span></a></li>
+      <li><a href="#departments"><i class="fa-solid fa-hospital nav-ic"></i>        <span>Departments</span></a></li>
+      <li><a href="#services"   ><i class="fa-solid fa-briefcase-medical nav-ic"></i><span>Services</span></a></li>
+      <li><a href="#doctors"    ><i class="fa-solid fa-user-doctor nav-ic"></i>     <span>Doctors</span></a></li>
+      <li><a href="#contact"    ><i class="fa-solid fa-address-book nav-ic"></i>    <span>Contact Us</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- Full-screen overlay — click to close mobile nav -->
+  <label for="nav-cb" class="nav-overlay-lbl" aria-hidden="true"></label>
+
+</header>
+
+<!-- ==============================================================
+     PAGE WRAPPER
+============================================================== -->
+<div id="pg">
+  <main>
+
+    <!-- ============================================================
+         HERO  (#home)
+    ============================================================ -->
+    <section id="home" class="hero">
+      <div class="hero-in">
+        <div class="hero-copy">
+
+          <div class="hero-badge">
+            <i class="fa-solid fa-circle-check"></i>
+            Rwanda's Premier Healthcare Facility
+          </div>
+
+          <h2>Advanced Healthcare<br><span>With a Human Touch</span></h2>
+
+          <p>
+            At <strong>Sunrise Care Hospital</strong>, we combine cutting-edge medical technology
+            with <em>genuine compassion</em> to deliver outstanding healthcare outcomes for every patient —
+            from routine check-ups to complex surgical interventions.
+          </p>
+
+          <div class="hero-btns">
+            <a href="#contact" class="btn-prim"><i class="fa-solid fa-calendar-plus"></i> Book Appointment</a>
+            <a href="#services" class="btn-out"><i class="fa-solid fa-stethoscope"></i> Our Services</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="hero-stat"><span class="sv">10K+</span><span class="sl">Patients Annually</span></div>
+            <div class="hero-stat"><span class="sv">25+</span><span class="sl">Specialist Doctors</span></div>
+            <div class="hero-stat"><span class="sv">24/7</span><span class="sl">Emergency Care</span></div>
+            <div class="hero-stat"><span class="sv">22<small>yrs</small></span><span class="sl">Serving Rwanda</span></div>
+          </div>
+
+        </div>
+
+        <div class="hero-img">
+          <img src="Today's%20Care.jpg"
+               alt="Sunrise Care Hospital — dedicated medical team providing compassionate patient care in a modern facility">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         MAIN CONTENT + ASIDE  (CSS Flexbox layout)
+    ============================================================ -->
+    <div class="wrap">
+
+      <!-- ====================================================
+           MAIN CONTENT COLUMN
+      ==================================================== -->
+      <div class="main">
+
+        <!-- ================================================
+             SECTION: OUR DEPARTMENTS
+             (2 articles — General Medicine & Pediatrics)
+        ================================================ -->
+        <section id="departments">
+          <h2 class="sec-h">Our <span>Departments</span></h2>
+          <p class="sec-sub">Specialised care units designed to meet every stage of your health journey.</p>
+
+          <div class="dept-list">
+
+            <!-- Article 1: General Medicine -->
+            <article id="general-medicine">
+              <img src="download.jpg"
+                   alt="General Medicine Department — physicians consulting with adult patients in a bright, modern clinic room">
+              <div class="dept-body">
+                <div class="dept-tag"><i class="fa-solid fa-stethoscope"></i> Department</div>
+                <h3>General Medicine Department</h3>
+                <p>
+                  Our <strong>General Medicine Department</strong> is the cornerstone of adult healthcare
+                  at Sunrise Care Hospital. Led by board-certified internists, the unit offers
+                  <em>comprehensive diagnosis and management</em> for a wide range of conditions —
+                  from <b>common illnesses</b> to the long-term management of chronic disease.
+                </p>
+                <p>
+                  <i>Whether you come with a fever, fatigue, or a complex multi-system concern</i>,
+                  our physicians take the time to listen and build a <u>personalised care plan</u>
+                  tailored specifically to you.
+                  <small>Outpatient clinics: Monday to Saturday, 7:00 AM – 7:00 PM.</small>
+                </p>
+                <p class="kv-label"><i class="fa-solid fa-list-check" style="color:var(--green)"></i> Key Services Offered</p>
+                <ul class="kv-list">
+                  <li><i class="fa-solid fa-circle-check"></i> <strong>Preventive Health Screenings</strong></li>
+                  <li><i class="fa-solid fa-circle-check"></i> Chronic Disease Management</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Diabetes Care &amp; Monitoring</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Hypertension Treatment</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Respiratory Illness Care</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Cardiovascular Risk Assessment</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- Article 2: Pediatrics -->
+            <article id="pediatrics">
+              <img src="Pin%20by%20Carol%20Vaughn%20on%20Grad,%20Congrat%20%26%20Nursing%20Card%20Ideas%20_%20Medical%20wallpaper,%20Medical%20artwork,%20Doctor%20wallpaper%20medical%20hd.jpg"
+                   alt="Pediatric Care Department — specialist nurse providing gentle care to a young child patient in a child-friendly ward">
+              <div class="dept-body">
+                <div class="dept-tag"><i class="fa-solid fa-baby"></i> Department</div>
+                <h3>Pediatric Care Department</h3>
+                <p>
+                  The <strong>Pediatrics Department</strong> is dedicated entirely to the health
+                  and development of <em>children from birth through 18 years of age</em>.
+                  Our team of paediatricians and nurses understands that <b>children require
+                  specialised medical attention</b> — not simply scaled-down adult care.
+                </p>
+                <p>
+                  We have created a <i>warm, welcoming, and child-friendly environment</i>
+                  that eases anxiety for young patients and their families.
+                  Our unit is <mark>ranked among the top 3 paediatric facilities in Rwanda</mark>,
+                  and we are proud of the <em>gentle, age-appropriate care</em> that defines our approach.
+                </p>
+                <p class="kv-label"><i class="fa-solid fa-list-check" style="color:var(--green)"></i> Key Services Offered</p>
+                <ul class="kv-list">
+                  <li><i class="fa-solid fa-circle-check"></i> Newborn &amp; Neonatal Care</li>
+                  <li><i class="fa-solid fa-circle-check"></i> <strong>Childhood Vaccination Programs</strong></li>
+                  <li><i class="fa-solid fa-circle-check"></i> Growth &amp; Development Monitoring</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Childhood Illness Management</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Nutritional Counselling</li>
+                  <li><i class="fa-solid fa-circle-check"></i> Paediatric Surgical Referral</li>
+                </ul>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- ================================================
+             SECTION: OUR SERVICES
+             (4 articles — Emergency, Lab, Outpatient, Inpatient)
+        ================================================ -->
+        <section id="services">
+          <h2 class="sec-h">Our <span>Services</span></h2>
+          <p class="sec-sub">End-to-end medical services delivered with excellence, speed, and dignity.</p>
+
+          <div class="svc-grid">
+
+            <!-- Article 1: Emergency Care -->
+            <article id="emergency">
+              <img src="Today's%20Care.jpg"
+                   alt="Emergency Care Unit — medical staff responding swiftly to a critical incoming patient">
+              <div class="svc-ic-row"><div class="svc-ic"><i class="fa-solid fa-truck-medical"></i></div></div>
+              <div class="svc-body">
+                <h3>Emergency Care</h3>
+                <p>
+                  Our <strong>Emergency Department</strong> is fully equipped and staffed
+                  to handle any medical crisis. We guarantee <u>immediate, life-saving attention</u>
+                  around the clock.
+                </p>
+                <ul class="svc-ul">
+                  <li><i class="fa-solid fa-chevron-right"></i> <mark>Open 24 hours, 7 days a week, 365 days a year</mark></li>
+                  <li><i class="fa-solid fa-chevron-right"></i> <strong>Trauma &amp; Critical Care Unit</strong></li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Cardiac Emergency Response</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Paediatric Emergency Bay</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Burns &amp; Wound Management</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- Article 2: Laboratory Services -->
+            <article id="laboratory">
+              <img src="Your%20Birth%20Date%20Reveals%20The%20Type%20Of%20Job%20You%20Were%20Born%20To%20Excel%20In,%20Says%20Numerology%20Experts.jpg"
+                   alt="Clinical Laboratory — qualified lab scientist processing patient diagnostic samples on modern equipment">
+              <div class="svc-ic-row"><div class="svc-ic"><i class="fa-solid fa-flask"></i></div></div>
+              <div class="svc-body">
+                <h3>Laboratory Services</h3>
+                <p>
+                  Our <strong>Clinical Laboratory</strong> delivers accurate diagnostic results
+                  that guide effective treatment. Staffed by <em>qualified medical scientists</em>,
+                  we process thousands of samples daily with precision and confidentiality.
+                </p>
+                <ul class="svc-ul">
+                  <li><i class="fa-solid fa-chevron-right"></i> <strong>Haematology &amp; Biochemistry</strong></li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Microbiology &amp; Culture Testing</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> HIV, Hepatitis &amp; STI Screening</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Blood Glucose &amp; Lipid Profiles</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> <em>Results within 24 hours</em> <small>(routine panels)</small></li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- Article 3: Outpatient Services -->
+            <article id="outpatient">
+              <img src="download.jpg"
+                   alt="Outpatient Clinic — patients seated in a clean modern hospital waiting area before their appointment">
+              <div class="svc-ic-row"><div class="svc-ic"><i class="fa-solid fa-hospital-user"></i></div></div>
+              <div class="svc-body">
+                <h3>Outpatient Services</h3>
+                <p>
+                  Our <strong>Outpatient Clinic</strong> brings specialist care to you without
+                  overnight admission. With <em>flexible scheduling</em> and minimal waiting times,
+                  quality care fits around your life.
+                  <small>Available Monday to Friday, 7:30 AM – 5:30 PM.</small>
+                </p>
+                <ul class="svc-ul">
+                  <li><i class="fa-solid fa-chevron-right"></i> Specialist Consultations</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> <strong>Minor Surgical Procedures</strong></li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Physiotherapy &amp; Rehabilitation</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Dental &amp; Eye Clinics</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Chronic Disease Follow-ups</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- Article 4: Inpatient Care -->
+            <article id="inpatient">
+              <img src="Pin%20by%20Carol%20Vaughn%20on%20Grad,%20Congrat%20%26%20Nursing%20Card%20Ideas%20_%20Medical%20wallpaper,%20Medical%20artwork,%20Doctor%20wallpaper%20medical%20hd.jpg"
+                   alt="Inpatient Ward — comfortable private patient room with nursing staff monitoring vital signs">
+              <div class="svc-ic-row"><div class="svc-ic"><i class="fa-solid fa-bed-pulse"></i></div></div>
+              <div class="svc-body">
+                <h3>Inpatient Care</h3>
+                <p>
+                  Our <strong>Inpatient Wards</strong> provide round-the-clock monitoring and care
+                  for admitted patients. Each room is designed for <em>comfort, privacy, and rapid
+                  recovery</em> with nursing support available at all times.
+                </p>
+                <ul class="svc-ul">
+                  <li><i class="fa-solid fa-chevron-right"></i> <strong>Private &amp; General Wards</strong></li>
+                  <li><i class="fa-solid fa-chevron-right"></i> <u>ICU &amp; High-Dependency Unit</u></li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Post-Operative Recovery Care</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Dietary &amp; Nutritional Support</li>
+                  <li><i class="fa-solid fa-chevron-right"></i> Structured Family Visiting Hours</li>
+                </ul>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- ================================================
+             SECTION: DOCTORS
+        ================================================ -->
+        <section id="doctors">
+          <h2 class="sec-h">Meet Our <span>Doctors</span></h2>
+          <p class="sec-sub">Highly qualified specialists committed to your health, recovery, and well-being.</p>
+
+          <div class="doc-grid">
+
+            <div class="doc-card">
+              <div class="doc-top">
+                <img src="download.jpg" alt="Dr. Michael Chen — General Medicine Physician">
+              </div>
+              <div class="doc-body">
+                <h4>Dr. Michael Chen</h4>
+                <span class="doc-spec">General Medicine</span>
+                <p>Over <strong>15 years</strong> of experience in internal medicine and preventive care for adult patients.</p>
+                <div class="doc-btns">
+                  <a href="#contact" class="bsm bsm-g"><i class="fa-solid fa-calendar-plus"></i> Book</a>
+                  <a href="#contact" class="bsm bsm-o"><i class="fa-solid fa-envelope"></i> Contact</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="doc-card">
+              <div class="doc-top">
+                <img src="Pin%20by%20Carol%20Vaughn%20on%20Grad,%20Congrat%20%26%20Nursing%20Card%20Ideas%20_%20Medical%20wallpaper,%20Medical%20artwork,%20Doctor%20wallpaper%20medical%20hd.jpg"
+                     alt="Dr. Amara Diallo — Specialist Pediatrician">
+              </div>
+              <div class="doc-body">
+                <h4>Dr. Amara Diallo</h4>
+                <span class="doc-spec">Pediatrics</span>
+                <p>Dedicated to <em>child health and development</em> with expertise in newborn care and childhood illnesses.</p>
+                <div class="doc-btns">
+                  <a href="#contact" class="bsm bsm-g"><i class="fa-solid fa-calendar-plus"></i> Book</a>
+                  <a href="#contact" class="bsm bsm-o"><i class="fa-solid fa-envelope"></i> Contact</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="doc-card">
+              <div class="doc-top">
+                <img src="Today's%20Care.jpg" alt="Dr. Sarah Johnson — Cardiologist">
+              </div>
+              <div class="doc-body">
+                <h4>Dr. Sarah Johnson</h4>
+                <span class="doc-spec">Cardiology</span>
+                <p>Specialist in <strong>heart disease prevention</strong> and interventional cardiology with a patient-first philosophy.</p>
+                <div class="doc-btns">
+                  <a href="#contact" class="bsm bsm-g"><i class="fa-solid fa-calendar-plus"></i> Book</a>
+                  <a href="#contact" class="bsm bsm-o"><i class="fa-solid fa-envelope"></i> Contact</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="doc-card">
+              <div class="doc-top">
+                <img src="Your%20Birth%20Date%20Reveals%20The%20Type%20Of%20Job%20You%20Were%20Born%20To%20Excel%20In,%20Says%20Numerology%20Experts.jpg"
+                     alt="Dr. James Okafor — Emergency Medicine Specialist">
+              </div>
+              <div class="doc-body">
+                <h4>Dr. James Okafor</h4>
+                <span class="doc-spec">Emergency Medicine</span>
+                <p>Expert in <u>critical care and trauma response</u>, leading our 24/7 emergency team with precision.</p>
+                <div class="doc-btns">
+                  <a href="#contact" class="bsm bsm-g"><i class="fa-solid fa-calendar-plus"></i> Book</a>
+                  <a href="#contact" class="bsm bsm-o"><i class="fa-solid fa-envelope"></i> Contact</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ================================================
+             EMERGENCY BANNER
+        ================================================ -->
+        <div class="emg-bar">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div class="et">
+            <h4>Medical Emergency?</h4>
+            <p>Our emergency team is on standby around the clock. <strong>Call us immediately.</strong></p>
+          </div>
+          <a href="tel:+250788432190"><i class="fa-solid fa-phone"></i> +250 788 432 190</a>
+        </div>
+
+        <!-- ================================================
+             SECTION: CONTACT US
+        ================================================ -->
+        <section id="contact">
+          <h2 class="sec-h">Contact <span>Us</span></h2>
+          <p class="sec-sub">Reach us by phone, email, or the form below — we respond within 24 hours.</p>
+
+          <div class="contact-flex">
+
+            <!-- Contact Info Cards -->
+            <div class="contact-cards">
+              <div class="cc">
+                <div class="cc-ic"><i class="fa-solid fa-location-dot"></i></div>
+                <div>
+                  <h4>Our Location</h4>
+                  <p>KN 5 Rd, Kigali, Rwanda<br><small>Near Kigali Convention Centre</small></p>
+                </div>
+              </div>
+
+              <div class="cc">
+                <div class="cc-ic"><i class="fa-solid fa-phone"></i></div>
+                <div>
+                  <h4>Phone Numbers</h4>
+                  <a href="tel:+250788432190"><b>+250 788 432 190</b></a><br>
+                  <a href="tel:+250722432190">+250 722 432 190</a>
+                </div>
+              </div>
+
+              <div class="cc">
+                <div class="cc-ic"><i class="fa-solid fa-envelope"></i></div>
+                <div>
+                  <h4>Email Address</h4>
+                  <a href="mailto:info@sunrisehospital.com">info@sunrisehospital.com</a><br>
+                  <a href="mailto:appointments@sunrisehospital.com"><small>appointments@sunrisehospital.com</small></a>
+                </div>
+              </div>
+
+              <div class="cc">
+                <div class="cc-ic"><i class="fa-solid fa-clock"></i></div>
+                <div>
+                  <h4>Working Hours</h4>
+                  <p>
+                    <strong>Emergency:</strong> 24 / 7 / 365<br>
+                    <b>Clinics:</b> Mon–Fri, 8AM–6PM<br>
+                    <small>Saturday: 8AM–1PM only</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Form (HTML5 validation — no JavaScript needed) -->
+            <div class="contact-form-card">
+              <h3><i class="fa-solid fa-paper-plane"></i> Send Us a Message</h3>
+              <form action="" method="post">
+                <div class="fr">
+                  <label for="c-name"><i class="fa-solid fa-user"></i> Full Name</label>
+                  <input type="text" id="c-name" name="name" placeholder="Your full name" required>
+                </div>
+                <div class="fr">
+                  <label for="c-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                  <input type="email" id="c-email" name="email" placeholder="your@email.com" required>
+                </div>
+                <div class="fr">
+                  <label for="c-subj"><i class="fa-solid fa-tag"></i> Subject</label>
+                  <input type="text" id="c-subj" name="subject" placeholder="e.g. Appointment enquiry">
+                </div>
+                <div class="fr">
+                  <label for="c-msg"><i class="fa-solid fa-comment"></i> Message</label>
+                  <textarea id="c-msg" name="message" placeholder="Write your message here…" required></textarea>
+                </div>
+                <button type="submit" class="btn-prim"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+              </form>
+            </div>
+
+          </div>
+        </section>
+
+      </div><!-- /.main -->
+
+      <!-- ====================================================
+           ASIDE  —  Quick Links & Contact Info
+           (required by assignment: aside with unordered list
+            of quick links + hospital contact information)
+      ==================================================== -->
+      <aside aria-label="Quick links and hospital contact information">
+
+        <div class="aside-box">
+          <h3><i class="fa-solid fa-bolt"></i> Quick Links</h3>
+          <ul class="ql">
+            <li><a href="#contact"><i class="fa-solid fa-calendar-plus"></i> Book Appointment</a></li>
+            <li><a href="tel:+250788432190"><i class="fa-solid fa-phone-volume"></i> Emergency Contacts</a></li>
+            <li><a href="#"><i class="fa-solid fa-user-shield"></i> Patient Portal</a></li>
+            <li><a href="#"><i class="fa-solid fa-briefcase"></i> Careers</a></li>
+            <li><a href="#departments"><i class="fa-solid fa-hospital"></i> Departments</a></li>
+            <li><a href="#doctors"><i class="fa-solid fa-user-doctor"></i> Find a Doctor</a></li>
+          </ul>
+        </div>
+
+        <div class="aside-box">
+          <h3><i class="fa-solid fa-address-card"></i> Contact Info</h3>
+          <div class="aside-contact">
+            <p><i class="fa-solid fa-phone"></i>
+               <span><b>Phone:</b><br>
+               <a href="tel:+250788432190">+250 788 432 190</a></span>
+            </p>
+            <p><i class="fa-solid fa-envelope"></i>
+               <span><b>Email:</b><br>
+               <a href="mailto:info@sunrisehospital.com">info@sunrisehospital.com</a></span>
+            </p>
+            <p><i class="fa-solid fa-location-dot"></i>
+               <span><b>Address:</b><br>KN 5 Rd, Kigali, Rwanda</span>
+            </p>
+            <p><i class="fa-solid fa-clock"></i>
+               <span><b>Emergency:</b><br><mark>Open 24 / 7</mark></span>
+            </p>
+          </div>
+        </div>
+
+        <div class="aside-box">
+          <h3><i class="fa-solid fa-circle-info"></i> About Us</h3>
+          <p style="font-size:.86rem;color:var(--text-mid);line-height:1.75;margin-bottom:1rem">
+            Founded in <b>2001</b>, Sunrise Care Hospital has served Rwanda with passion
+            for over <strong>22 years</strong>. Our motto:
+            <i>"Excellence in care, dignity for all."</i>
+          </p>
+          <a href="#contact" class="btn-prim"
+             style="font-size:.85rem;padding:.6rem 1.1rem;border-radius:20px;display:inline-flex;align-items:center;gap:.4rem;text-decoration:none">
+            <i class="fa-solid fa-calendar-plus"></i> Book Now
+          </a>
+        </div>
+
+      </aside>
+
+    </div><!-- /.wrap -->
+
+  </main>
+
+  <!-- ==============================================================
+       FOOTER
+  ============================================================== -->
+  <footer>
+    <div class="ft-in">
+
+      <div class="ft-grid">
+
+        <!-- Brand + social media -->
+        <div class="ft-brand">
+          <div class="logo-row">
+            <div class="fi"><i class="fa-solid fa-plus"></i></div>
+            <h3>Sunrise Care Hospital</h3>
+          </div>
+          <p>
+            <em>Compassionate care for a healthier tomorrow.</em><br>
+            Serving the people of Rwanda and East Africa since 2001.
+          </p>
+          <!-- Social media — Facebook, Instagram, Twitter -->
+          <div class="soc-links">
+            <a href="#" title="Facebook"    aria-label="Follow us on Facebook" ><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" title="Instagram"   aria-label="Follow us on Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" title="Twitter / X" aria-label="Follow us on Twitter"  ><i class="fa-brands fa-x-twitter"></i></a>
+          </div>
+        </div>
+
+        <div class="ft-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#home">        <i class="fa-solid fa-chevron-right"></i> Home</a></li>
+            <li><a href="#departments"> <i class="fa-solid fa-chevron-right"></i> Departments</a></li>
+            <li><a href="#services">    <i class="fa-solid fa-chevron-right"></i> Services</a></li>
+            <li><a href="#doctors">     <i class="fa-solid fa-chevron-right"></i> Our Doctors</a></li>
+            <li><a href="#contact">     <i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="ft-col">
+          <h4>Departments</h4>
+          <ul>
+            <li><a href="#general-medicine"><i class="fa-solid fa-chevron-right"></i> General Medicine</a></li>
+            <li><a href="#pediatrics">      <i class="fa-solid fa-chevron-right"></i> Pediatrics</a></li>
+            <li><a href="#emergency">       <i class="fa-solid fa-chevron-right"></i> Emergency Care</a></li>
+            <li><a href="#laboratory">      <i class="fa-solid fa-chevron-right"></i> Laboratory</a></li>
+            <li><a href="#inpatient">       <i class="fa-solid fa-chevron-right"></i> Inpatient Care</a></li>
+          </ul>
+        </div>
+
+        <div class="ft-col">
+          <h4>Patient Resources</h4>
+          <ul>
+            <li><a href="#contact">             <i class="fa-solid fa-chevron-right"></i> Book Appointment</a></li>
+            <li><a href="tel:+250788432190">    <i class="fa-solid fa-chevron-right"></i> Emergency Contacts</a></li>
+            <li><a href="#">                    <i class="fa-solid fa-chevron-right"></i> Patient Portal</a></li>
+            <li><a href="#">                    <i class="fa-solid fa-chevron-right"></i> Insurance Info</a></li>
+            <li><a href="#">                    <i class="fa-solid fa-chevron-right"></i> Careers</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Copyright notice (as required by assignment) -->
+      <div class="ft-bot">
+        <p>&copy; 2026 <strong style="color:rgba(255,255,255,.75)">Sunrise Care Hospital</strong>. All rights reserved.</p>
+        <p>
+          <a href="#">Privacy Policy</a> &middot;
+          <a href="#">Terms of Service</a> &middot;
+          <a href="#">Insurance</a>
+        </p>
+      </div>
+
+    </div>
+  </footer>
+
+</div><!-- /#pg -->
+
+</body>
+</html>
